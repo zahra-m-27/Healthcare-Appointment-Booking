@@ -1,0 +1,34 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend of Health Appointment App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix ../frontend",
+    "test": "mocha test --timeout 10000",
+    "coverage": "nyc npm run test",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm run build --prefix ../frontend"
+  },
+  "author": "PBL Team IT",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.15",
+    "stripe": "^8.141.0",
+    "url": "^0.11.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.3",
+    "chai-http": "^4.3.0",
+    "concurrently": "^7.6.0",
+    "mocha": "^8.3.1",
+    "nyc": "^15.1.0"
+  }
+}
