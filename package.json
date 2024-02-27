@@ -1,19 +1,16 @@
 {
-  "name": "HealthcareAppointmentBooking",
+  "name": "healthcare-appointment-booking",
   "version": "1.0.0",
-  "description": "Health Appointment App",
-  "main": "backend/server.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "develop": "cd backend && npm run client",
-    "install": "cd backend && npm i && cd ../frontend && npm i --production=false",
-    "build": "cd frontend && npm run build",
-    "render-build":"npm install && npm run build"
+    "install-server": "cd backend && npm install",
+    "start-server": "cd backend && node server.js",
+    "install-client": "cd frontend && npm install",
+    "build-client": "cd frontend && npm run build",
+    "start-client": "cd frontend && npm run start"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^7.6.0"
-  }
+  "license": "ISC"
 }
