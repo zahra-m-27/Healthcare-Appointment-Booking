@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useState} from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import {
   Container,
@@ -15,13 +15,12 @@ import {
   Input,
 } from "reactstrap";
 import axios from "axios";
-import { AuthContext } from "../Auth/AuthContext";
+import {AuthContext} from "../Auth/AuthContext";
 
 const DoctorSignUpForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-
   const [status, setStatus] = useState(0);
   const { token, setToken, id, setId } = useContext(AuthContext);
   const history = useHistory();
@@ -37,14 +36,17 @@ const DoctorSignUpForm = () => {
         }
       );
       setStatus(res.status);
-      const doctorUniqueId = res.data.doctorUniqueId;
-      const doctorId = res.data.doctorId;
+
+      const receivedToken = res.data.token;
+      const doctorId=res.data.doctorId;
 
       if (res.status === 200) {
-        // window.localStorage.setItem("token", token);
-        window.localStorage.setItem("id", doctorUniqueId);
+        window.localStorage.clear();
+        window.localStorage.setItem("token", receivedToken);
         window.localStorage.setItem("doctorId", doctorId);
-        setId(doctorUniqueId);
+
+        setToken(receivedToken);
+        setId(doctorId);
         history.push("/doctor/update");
       }
     } catch (err) {

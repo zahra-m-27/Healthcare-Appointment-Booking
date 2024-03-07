@@ -26,11 +26,11 @@ function PhoneNumber() {
       const res = await axios.put(
         `${process.env.REACT_APP_SERVER_URL}/patients/update-phone`,
         {
-          patientUniqueId: id,
+          _id: id,
           phoneNumber: number,
         }
       );
-      console.log(id);
+      console.log(token, id);
       if (res.status === 200) {
         history.push("/patient");
         toast.success("phone number updated", {

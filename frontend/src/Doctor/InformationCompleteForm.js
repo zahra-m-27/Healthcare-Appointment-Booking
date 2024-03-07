@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import {
   Container,
@@ -15,7 +15,6 @@ import {
   Input,
 } from "reactstrap";
 import axios from "axios";
-import { AuthContext } from "../Auth/AuthContext";
 import specializations from "./specialization";
 
 const CompleteInformation = () => {
@@ -23,19 +22,21 @@ const CompleteInformation = () => {
   const [specialization, setSpecialization] = useState("");
   const [feesPerSession, setFeesPerSession] = useState("");
   const [name, setName] = useState("");
+  const [token, setToken] = useState("");
+  const id= localStorage.getItem("doctorId");
+  const history = useHistory();
   const options = [];
+
   for (let i = 0; i < specializations.length; i++) {
     options.push(specializations[i]);
   }
-  const { token, setToken, id, setId } = useContext(AuthContext);
-  const history = useHistory();
 
   async function update() {
     try {
       const res = await axios.put(
         `${process.env.REACT_APP_SERVER_URL}/doctors/update/`,
         {
-          doctorUniqueId: id,
+          _id: id,
           name: name,
           phoneNumber: phoneNumber,
           specialization: specialization,
@@ -47,7 +48,7 @@ const CompleteInformation = () => {
       if (res.status === 200) {
         window.localStorage.setItem("token", token);
         setToken(token);
-        history.push("/doctor");
+        history.push("/doctor/perosnaldetails");
       }
     } catch (err) {
       console.log(err);

@@ -36,17 +36,15 @@ const DoctorLoginForm = () => {
       setStatus(res.status);
 
       const token = res.data.token;
-      const doctorUniqueId = res.data.doctorUniqueId;
       const doctorId = res.data.doctorId;
 
       if (res.status === 200) {
         window.localStorage.setItem("token", token);
-        window.localStorage.setItem("id", doctorUniqueId);
         window.localStorage.setItem("doctorId", doctorId);
 
-        setId(doctorUniqueId);
         setToken(token);
-        history.push("/doctor");
+        setId(doctorId);
+        history.push("/doctor/perosnaldetails");
       }
     } catch (err) {
       console.log(err);
@@ -54,7 +52,7 @@ const DoctorLoginForm = () => {
   }
 
   if (token) {
-    return <Redirect to="/doctor" />;
+    return <Redirect to="/doctor/perosnaldetails" />;
   }
   return (
     <Container className="text-center">

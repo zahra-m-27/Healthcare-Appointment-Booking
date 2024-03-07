@@ -10,12 +10,11 @@ import { useHistory } from "react-router-dom";
 const PatientDashboard = () => {
   const [patient, setPatient] = useState({});
   const [loading, setLoading] = useState(true);
-  const [patientId, setPatientId] = useState("");
+  const patientId = localStorage.getItem("id");
   const history = useHistory();
 
   useEffect(() => {
     setLoading(true);
-    setPatientId(localStorage.getItem("id"));
     const getPatientDetails = async () => {
       const res = await Axios.get(
         `${process.env.REACT_APP_SERVER_URL}/patients/getPatientDetails/${patientId}`

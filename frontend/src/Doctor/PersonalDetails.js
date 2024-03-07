@@ -3,15 +3,18 @@ import Navbar from "../Basic/Navbar";
 import LeftSide from "../Dashbaord/LeftsideDoctor";
 import "../Dashbaord/dashboard.css";
 import Axios from "axios";
+import {Button} from "reactstrap";
+import {useHistory} from "react-router-dom";
 
 const PersonalDetails = () => {
   const [doctor, setDoctor] = useState({});
   const [loading, setLoading] = useState(true);
-  const [doctorId, setDoctorId] = useState("");
+  const doctorId = localStorage.getItem("doctorId");
+  const history = useHistory();
+
 
   useEffect(() => {
     setLoading(true);
-    setDoctorId(localStorage.getItem("id"));
     const getDoctorDetails = async () => {
       const res = await Axios.get(
         `${process.env.REACT_APP_SERVER_URL}/doctors/getDoctorDetails/${doctorId}`
@@ -85,6 +88,17 @@ const PersonalDetails = () => {
                     {doctor.feesPerSession}
                   </li>
                 </ul>
+                <Button
+                    size="sm"
+                    color="info"
+                    className="ml-auto"
+                    style={{ padding: "1% 10%", fontSize: "17px" }}
+                    onClick={() => {
+                      history.push("/doctor/update");
+                    }}
+                >
+                  Update
+                </Button>
               </div>
             </div>
           </div>

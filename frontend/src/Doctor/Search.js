@@ -119,7 +119,7 @@ const Search = () => {
       >
         <div className="row">
           {Doctor.map((doc) => (
-            <div className="col-sm-6 mb-2" key={doc.doctorUniqueId}>
+            <div className="col-sm-6 mb-2" key={doc._id}>
               <div className="card">
                 <div className="card-body">
                   <div className="text-info">
@@ -146,11 +146,7 @@ const Search = () => {
                         <button
                           className="btn btn-sm btn-primary"
                           onClick={() => {
-                            localStorage.setItem("doctorId", null);
-                            localStorage.setItem(
-                              "doctorId",
-                              doc.doctorUniqueId
-                            );
+                            localStorage.setItem("doctorId", doc._id);
                           }}
                         >
                           Book

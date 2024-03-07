@@ -8,14 +8,14 @@ const BookingSlots = (props) => {
   const { date, doctor } = props.location.state;
   const [dateId, setDateId] = useState();
   const [slots, setSlots] = useState([]);
-  const [doctorId, setDoctorId] = useState(localStorage.getItem("doctorId"));
+  const doctorId = localStorage.getItem("doctorId");
 
   useEffect(() => {
     const fetchDate = async (dateToPost) => {
       const { data } = await Axios.post(
         `${process.env.REACT_APP_SERVER_URL}/doctors/get-slots/`,
         {
-          doctorUniqueId: doctorId,
+          _id: doctorId,
           date: dateToPost,
         }
       );

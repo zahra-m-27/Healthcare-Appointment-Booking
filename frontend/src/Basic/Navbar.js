@@ -5,8 +5,9 @@ import logo from "../image/navbaricon1.png";
 import { AuthContext } from "../Auth/AuthContext";
 
 const Navbar = () => {
-  const { token, setToken, setId } = useContext(AuthContext);
+  const { setToken, setId } = useContext(AuthContext);
   const history = useHistory();
+  const token = localStorage.getItem("token");
 
   const logOut = () => {
     localStorage.clear();
