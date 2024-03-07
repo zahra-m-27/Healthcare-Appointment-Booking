@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthContext";
 
 const Card = ({ login, Image, link }) => {
-  const { token, id, setToken, setId } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
+  const isDoctor = localStorage.getItem('doctorId');
 
   return (
     <div className="card mb-3" style={{ width: "18rem" }}>
@@ -21,6 +22,7 @@ const Card = ({ login, Image, link }) => {
           <Link
             to={link}
             className="btn btn-primary justify-content-center w-100"
+            hidden={!isDoctor}
           >
             My Dashboard
           </Link>
@@ -37,6 +39,7 @@ const Card = ({ login, Image, link }) => {
           <Link
             to={link}
             className="btn btn-primary justify-content-center w-100"
+            hidden={isDoctor}
           >
             My Dashboard
           </Link>
