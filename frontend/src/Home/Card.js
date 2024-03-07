@@ -4,9 +4,9 @@ import { AuthContext } from "../Auth/AuthContext";
 
 const Card = ({ login, Image, link }) => {
   const { token } = useContext(AuthContext);
-  const isDoctor = localStorage.getItem('doctorId');
+    const isDoctor = token ? JSON.parse(localStorage.getItem('user')).specialization : null;
 
-  return (
+    return (
     <div className="card mb-3" style={{ width: "18rem" }}>
       <img src={Image} className="card-img-top" alt="..." height="240" />
       <div className="card-body">
