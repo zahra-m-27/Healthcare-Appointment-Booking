@@ -11,7 +11,7 @@ require("dotenv").config();
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "https://healthcare-appointment-booking-6obk.onrender.com",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allow session cookie from browser to pass through
   })
