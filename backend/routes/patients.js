@@ -11,9 +11,7 @@ const { Appointment } = appointmentImport;
 const patients = require("../models/patient.model");
 require("dotenv").config();
 const { Patient } = patients;
-let pId = 1000;
 
-// To get all the patients
 router.route("/").get((req, res) => {
   Patient.find()
     .then((patients) => {
@@ -24,20 +22,16 @@ router.route("/").get((req, res) => {
     });
 });
 
-// To add a patient
 router.route("/signup").post((req, res) => {
-  pId = pId + 1;
   const username = req.body.username; // Required. can't be undefined
   const password = req.body.password;
   const email = req.body.email;
   const name = req.body.name;
   const phoneNumber = req.body.phoneNumber;
-  const patientUniqueId = pId.toString();
 
   const newPatient = new Patient({
     username,
     password,
-    patientUniqueId,
     email,
     name,
     phoneNumber,
@@ -45,14 +39,14 @@ router.route("/signup").post((req, res) => {
 
   newPatient
     .save()
-    .then(() => {
-      console.log(`${newPatient} added!`);
-      const token = jwt.sign(JSON.stringify(newPatient), process.env.KEY, {
+    .then((savedPatient) => {
+      console.log(`${savedPatient} added!`);
+      const token = jwt.sign(JSON.stringify(savedPatient), process.env.KEY, {
         algorithm: process.env.ALGORITHM,
       });
       res.status(200).json({
         token: token.toString(),
-        patientUniqueId: newPatient.patientUniqueId,
+        patientId: savedPatient._id,
       });
     })
     .catch((err) => {
@@ -60,11 +54,10 @@ router.route("/signup").post((req, res) => {
     });
 });
 
-// To update a patient's phone number
 router.route("/update-phone").put((req, res) => {
-  const patientId = req.body.patientUniqueId;
+  const patientId = req.body._id;
 
-  Patient.findOne({ patientUniqueId: patientId }).then((patient) => {
+  Patient.findOne({ _id: patientId }).then((patient) => {
     if (patient) {
       patient.phoneNumber = req.body.phoneNumber;
 
@@ -110,7 +103,7 @@ router.route("/login").post(async (req, res) => {
 
       return res.status(200).json({
         token: token.toString(),
-        patientUniqueId: patient.patientUniqueId,
+        patientId: patient._id
       });
     }
   } catch (err) {
@@ -121,8 +114,8 @@ router.route("/login").post(async (req, res) => {
 
 router.route("/getPatientDetails/:id").get(async (req, res) => {
   try {
-    const patientUniqueId = req.params.id;
-    const patient = await Patient.findOne({ patientUniqueId: patientUniqueId });
+    const patientId = req.params.id;
+    const patient = await Patient.findById(patientId);
 
     if (patient) {
       return res.status(200).json(patient);

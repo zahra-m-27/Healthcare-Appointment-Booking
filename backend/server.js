@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const patientsRouter = require("./routes/patients");
-const doctorsRotuer = require("./routes/doctors");
+const doctorsRouter = require("./routes/doctors");
 const appointmentRouter = require("./routes/appointments");
 const path = require("path");
 require("dotenv").config();
@@ -11,14 +11,14 @@ require("dotenv").config();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://healthcare-appointment-booking-z6ma.onrender.com",
+    origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allow session cookie from browser to pass through
   })
 );
 
 app.use("/patients", patientsRouter);
-app.use("/doctors", doctorsRotuer);
+app.use("/doctors", doctorsRouter);
 app.use("/appointments", appointmentRouter);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 

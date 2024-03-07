@@ -12,11 +12,6 @@ const patientSchema = new Schema({
     type: String,
     required: true,
   },
-  patientUniqueId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   email: {
     type: String,
   },

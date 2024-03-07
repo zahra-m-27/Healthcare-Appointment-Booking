@@ -45,11 +45,6 @@ const doctorSchema = new Schema({
     type: String,
   },
   dates: [dateSchedule],
-  doctorUniqueId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
 });
 
 const Doctor = mongoose.model("Doctor", doctorSchema);

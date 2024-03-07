@@ -18,7 +18,8 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.4.0",
     "mongoose": "^5.11.15",
     "stripe": "^8.141.0",
     "url": "^0.11.0",
@@ -28,7 +29,7 @@
     "chai": "^4.3.3",
     "chai-http": "^4.3.0",
     "concurrently": "^7.6.0",
-    "mocha": "^8.3.1",
+    "mocha": "^10.3.0",
     "nyc": "^15.1.0"
   }
 }

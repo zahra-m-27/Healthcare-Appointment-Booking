@@ -6,7 +6,6 @@ const appointmentImport = require("../models/appointment.model");
 const { Doctor, Slot, DateSchedule } = doctors;
 const { Appointment, Feedback } = appointmentImport;
 const bcrypt = require("../bcrypt/bcrypt");
-let dId = 0;
 
 function createDate(date) {
   return new DateSchedule({
@@ -28,7 +27,6 @@ function createDate(date) {
   });
 }
 
-// To get all the doctors
 router.route("/").get((req, res) => {
   Doctor.find()
     .then((doctors) => {
@@ -39,28 +37,27 @@ router.route("/").get((req, res) => {
     });
 });
 
-// To add a doctor
 router.route("/add").post((req, res) => {
-  dId = dId + 1;
   const username = req.body.username; // Required. can't be undefined
   const password = req.body.password;
   const email = req.body.email;
-  const doctorUniqueId = dId.toString();
 
   const newDoctor = new Doctor({
     username,
     password,
     email,
-    doctorUniqueId,
   });
 
   newDoctor
     .save()
-    .then(() => {
-      console.log(`${newDoctor} added!`);
+    .then((savedDoctor) => {
+      console.log(`${savedDoctor} added!`);
+      const token = jwt.sign(JSON.stringify(savedDoctor), process.env.KEY, {
+        algorithm: process.env.ALGORITHM,
+      });
       res.status(200).json({
-        doctorUniqueId: newDoctor.doctorUniqueId,
-        doctorId: newDoctor._id,
+        doctorId: savedDoctor._id,
+        token: token.toString(),
       });
     })
     .catch((err) => {
@@ -68,11 +65,10 @@ router.route("/add").post((req, res) => {
     });
 });
 
-// To update a doctor
 router.route("/update").put((req, res) => {
-  const doctorUniqueId = req.body.doctorUniqueId; // Required. can't be undefined
+  const doctorUniqueId = req.body._id; // Required. can't be undefined
 
-  Doctor.findOne({ doctorUniqueId: doctorUniqueId }).then((doctor) => {
+  Doctor.findOne({ _id: doctorUniqueId }).then((doctor) => {
     if (doctor) {
       doctor.name = req.body.name;
       doctor.phoneNumber = req.body.phoneNumber;
@@ -97,7 +93,6 @@ router.route("/update").put((req, res) => {
   });
 });
 
-// Doctor login
 router.route("/login").post(async (req, res) => {
   try {
     const username = req.body.username;
@@ -127,7 +122,6 @@ router.route("/login").post(async (req, res) => {
       });
       return res.status(200).json({
         token: token.toString(),
-        doctorUniqueId: doctor.doctorUniqueId,
         doctorId: doctor._id,
       });
     }
@@ -137,13 +131,12 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-// To get the slots available for the date
 router.route("/get-slots").post(async (req, res) => {
   try {
-    const id = req.body.doctorUniqueId; // Doctor's id
+    const id = req.body._id; // Doctor's id
     const date = req.body.date; // Date to book
     console.log(id);
-    const doctor = await Doctor.findOne({ doctorUniqueId: id });
+    const doctor = await Doctor.findOne({ _id: id });
 
     // Doctor not found
     if (doctor == null) {
@@ -167,7 +160,7 @@ router.route("/get-slots").post(async (req, res) => {
       // Add new slots if date not found in the db
       const dateSchedule = createDate(date);
       const updatedDoctor = await Doctor.findOneAndUpdate(
-        { doctorUniqueId: doctor.doctorUniqueId },
+        { _id: id },
         { $push: { dates: dateSchedule } },
         { new: true }
       );
@@ -351,8 +344,8 @@ router.route("/previous-appointments").post(async (req, res) => {
 
 router.route("/getDoctorDetails/:id").get(async (req, res) => {
   try {
-    const doctorUniqueId = req.params.id;
-    const doctor = await Doctor.findOne({ doctorUniqueId: doctorUniqueId });
+    const doctorId = req.params.id;
+    const doctor = await Doctor.findById(doctorId);
 
     if (doctor) {
       return res.status(200).json(doctor);
